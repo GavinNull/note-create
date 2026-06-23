@@ -1,0 +1,161 @@
+# =============================================================================
+# Example Profile: Real Analysis (Pure Math, Monolingual CN)
+# =============================================================================
+# Demonstrates: pure math domain, definition→lemma→proof→corollary chains,
+#              equation numbering, theorem summary tables, no code
+# =============================================================================
+
+profile:
+  name: "math-analysis"
+  display: "数学分析 (Real Analysis)"
+  description: "Pure mathematics — limits, continuity, differentiation, integration, series"
+  domain: "math_pure"
+
+  languages:
+    source: "en"
+    target: "zh-CN"
+    annotation: "en"
+    annotation_style: "parens"
+    field_suffix_source: "_en"
+    field_suffix_target: "_cn"
+
+  source:
+    chapter_pattern: "Chapter (\\d+)"
+    section_pattern: "^(\\d+\\.\\d+)"
+    section_style: "dotted"
+    code_language: null
+    code_comment_style: null
+    math: { inline: "$", display: "$$" }
+
+  content_types:
+    - definition
+    - theorem
+    - lemma
+    - corollary
+    - proof
+    - equation
+    - example
+    - derivation
+    - note
+    - figure
+    - paragraph
+
+  template:
+    title: "# 第{chapter}章：{title_cn} (Chapter {chapter}: {title_en})"
+    epigraph: null
+    section: "## {number} {title_cn} ({title_en})"
+    subsection: "### {title_cn}"
+    separator: "---"
+    toc_heading: "## 目录"
+    toc_entry: "{idx}. [{number} {title_en} {title_cn}](#{anchor})"
+    end_sections:
+      - id: theorem_summary
+        heading: "## 定理汇总 (Theorem Summary)"
+        optional: false
+      - id: key_formulas
+        heading: "## 核心公式 (Key Formulas)"
+        optional: true
+      - id: classic_problems
+        heading: "## 典型例题 (Classic Problems)"
+        optional: true
+      - id: term_glossary
+        heading: "## 关键术语 (Key Terms)"
+        optional: false
+
+  labels:
+    definition:    { en: "Definition",    cn: "定义" }
+    theorem:       { en: "Theorem",       cn: "定理" }
+    lemma:         { en: "Lemma",         cn: "引理" }
+    corollary:     { en: "Corollary",     cn: "推论" }
+    proposition:   { en: "Proposition",   cn: "命题" }
+    conjecture:    { en: "Conjecture",    cn: "猜想" }
+    proof:         { en: "Proof",         cn: "证明" }
+    remark:        { en: "Remark",        cn: "注记" }
+    example:       { en: "Example",       cn: "例题" }
+    note:          { en: "Note",          cn: "注" }
+
+  tables:
+    theorem_list:
+      headers: ["定理 (Theorem)", "内容 (Statement)", "页码 (Page)"]
+    formula_list:
+      headers: ["公式 (Formula)", "名称 (Name)", "条件 (Conditions)"]
+    term_glossary:
+      headers: ["术语 (Term)", "定义 (Definition)"]
+
+  formatting:
+    definition_order: "en_first"
+    term_annotation: "first_per_section"
+    table_first_column_bold: true
+    blank_lines_around_blocks: true
+
+  review:
+    check_term_consistency: true
+    check_latex: true
+    check_code_comments: false
+    check_missing_summaries: true
+    punctuation:
+      chinese_in_chinese_text: true
+      no_html_tags: true
+
+  terminology:
+    limits_and_continuity:
+      - { cn: "极限", en: "Limit" }
+      - { cn: "收敛", en: "Convergence" }
+      - { cn: "发散", en: "Divergence" }
+      - { cn: "连续", en: "Continuous" }
+      - { cn: "一致连续", en: "Uniformly Continuous" }
+      - { cn: "ε-δ 定义", en: "ε-δ Definition" }
+      - { cn: "聚点", en: "Accumulation Point" }
+      - { cn: "邻域", en: "Neighborhood" }
+      - { cn: "开集", en: "Open Set" }
+      - { cn: "闭集", en: "Closed Set" }
+      - { cn: "紧集", en: "Compact Set" }
+      - { cn: "完备性", en: "Completeness" }
+      - { cn: "柯西序列", en: "Cauchy Sequence" }
+      - { cn: "确界", en: "Supremum / Infimum" }
+      - { cn: "上确界", en: "Supremum" }
+      - { cn: "下确界", en: "Infimum" }
+    differentiation:
+      - { cn: "导数", en: "Derivative" }
+      - { cn: "可微", en: "Differentiable" }
+      - { cn: "中值定理", en: "Mean Value Theorem" }
+      - { cn: "罗尔定理", en: "Rolle's Theorem" }
+      - { cn: "泰勒展开", en: "Taylor Expansion" }
+      - { cn: "拉格朗日余项", en: "Lagrange Remainder" }
+      - { cn: "偏导数", en: "Partial Derivative" }
+      - { cn: "梯度", en: "Gradient" }
+      - { cn: "方向导数", en: "Directional Derivative" }
+      - { cn: "链式法则", en: "Chain Rule" }
+    integration:
+      - { cn: "积分", en: "Integral" }
+      - { cn: "黎曼积分", en: "Riemann Integral" }
+      - { cn: "黎曼和", en: "Riemann Sum" }
+      - { cn: "达布上和", en: "Upper Darboux Sum" }
+      - { cn: "达布下和", en: "Lower Darboux Sum" }
+      - { cn: "原函数", en: "Antiderivative" }
+      - { cn: "微积分基本定理", en: "Fundamental Theorem of Calculus" }
+      - { cn: "反常积分", en: "Improper Integral" }
+      - { cn: "勒贝格积分", en: "Lebesgue Integral" }
+      - { cn: "测度", en: "Measure" }
+    series:
+      - { cn: "级数", en: "Series" }
+      - { cn: "幂级数", en: "Power Series" }
+      - { cn: "收敛半径", en: "Radius of Convergence" }
+      - { cn: "一致收敛", en: "Uniform Convergence" }
+      - { cn: "逐点收敛", en: "Pointwise Convergence" }
+      - { cn: "绝对收敛", en: "Absolute Convergence" }
+      - { cn: "条件收敛", en: "Conditional Convergence" }
+      - { cn: "傅里叶级数", en: "Fourier Series" }
+    topology_basics:
+      - { cn: "拓扑空间", en: "Topological Space" }
+      - { cn: "度量空间", en: "Metric Space" }
+      - { cn: "连通性", en: "Connectedness" }
+      - { cn: "同胚", en: "Homeomorphism" }
+    proof_terms:
+      - { cn: "充分必要条件", en: "Necessary and Sufficient Condition (iff)" }
+      - { cn: "存在", en: "There exists (∃)" }
+      - { cn: "任意", en: "For all (∀)" }
+      - { cn: "证毕", en: "QED / ∎" }
+      - { cn: "反证法", en: "Proof by Contradiction" }
+      - { cn: "数学归纳法", en: "Mathematical Induction" }
+      - { cn: "构造性证明", en: "Constructive Proof" }

@@ -1,0 +1,156 @@
+# =============================================================================
+# Example Profile: University Physics (Bilingual CN/EN, Python for Simulations)
+# =============================================================================
+# Demonstrates: non-CS STEM course, Python code for simulations,
+#              experiment content type, physics terminology
+# =============================================================================
+
+profile:
+  name: "physics-bilingual"
+  display: "大学物理 (University Physics)"
+  description: "Bilingual CN/EN physics course with Python simulations and lab experiments"
+  domain: "physics"
+
+  languages:
+    source: "en"
+    target: "zh-CN"
+    annotation: "en"
+    annotation_style: "parens"
+    field_suffix_source: "_en"
+    field_suffix_target: "_cn"
+
+  source:
+    chapter_pattern: "Chapter (\\d+)"
+    section_pattern: "^(\\d+\\.\\d+)"
+    section_style: "dotted"
+    code_language: "python"              # Python for simulations
+    code_comment_style: "# %s"
+    math: { inline: "$", display: "$$" }
+
+  content_types:
+    - definition
+    - theorem              # Physical laws are treated as theorems
+    - equation             # Standalone important equations
+    - example              # Worked physics problems
+    - experiment           # Lab experiment descriptions
+    - code                 # Python simulation code
+    - derivation           # Formula derivations
+    - comparison_table     # Compare theories, units, etc.
+    - note                 # Important remarks
+    - figure               # Diagrams, force diagrams, graphs
+    - paragraph
+
+  template:
+    title: "# 第{chapter}章：{title_cn} (Chapter {chapter}: {title_en})"
+    epigraph: null
+    section: "## {number} {title_cn} ({title_en})"
+    subsection: "### {title_cn}"
+    separator: "---"
+    toc_heading: "## 目录"
+    toc_entry: "{idx}. [{number} {title_en} {title_cn}](#{anchor})"
+
+    end_sections:
+      - id: key_equations
+        heading: "## 核心公式 (Key Equations)"
+        optional: false
+      - id: term_glossary
+        heading: "## 关键术语 (Key Terminology)"
+        optional: false
+      - id: experiment_summary
+        heading: "## 实验要点 (Lab Summary)"
+        optional: true
+
+  labels:
+    definition:    { en: "Definition",    cn: "定义" }
+    theorem:       { en: "Law",           cn: "定律" }      # Physics uses "Law" not "Theorem"
+    lemma:         { en: "Principle",     cn: "原理" }
+    proof:         { en: "Derivation",    cn: "推导" }      # Physics uses "Derivation" not "Proof"
+    note:          { en: "Note",          cn: "注" }
+    example:       { en: "Example",       cn: "例题" }
+    figure:        { en: "Figure",        cn: "图" }
+    experiment:    { en: "Experiment",    cn: "实验" }
+
+  tables:
+    unit_table:
+      headers: ["物理量 (Quantity)", "符号 (Symbol)", "单位 (Unit)", "量纲 (Dimension)"]
+    constant_table:
+      headers: ["常数 (Constant)", "符号 (Symbol)", "数值 (Value)", "单位 (Unit)"]
+    comparison:
+      headers: ["概念 (Concept)", "公式 (Formula)", "适用条件 (Conditions)"]
+    term_glossary:
+      headers: ["术语 (Term)", "定义 (Definition)"]
+
+  formatting:
+    definition_order: "en_first"
+    term_annotation: "first_per_section"
+    table_first_column_bold: true
+    blank_lines_around_blocks: true
+
+  images:
+    path_pattern: "images/ch{chapter:02d}-{slug}.png"
+    alt_text: "{description_cn}"
+    demo_link: null
+
+  review:
+    check_term_consistency: true
+    check_latex: true
+    check_code_comments: true
+    check_missing_summaries: true
+    punctuation:
+      chinese_in_chinese_text: true
+      no_html_tags: true
+
+  terminology:
+    mechanics:
+      - { cn: "力", en: "Force" }
+      - { cn: "质量", en: "Mass" }
+      - { cn: "加速度", en: "Acceleration" }
+      - { cn: "速度", en: "Velocity" }
+      - { cn: "位移", en: "Displacement" }
+      - { cn: "动量", en: "Momentum" }
+      - { cn: "动能", en: "Kinetic Energy" }
+      - { cn: "势能", en: "Potential Energy" }
+      - { cn: "功", en: "Work" }
+      - { cn: "功率", en: "Power" }
+      - { cn: "冲量", en: "Impulse" }
+      - { cn: "转矩", en: "Torque" }
+      - { cn: "角动量", en: "Angular Momentum" }
+      - { cn: "转动惯量", en: "Moment of Inertia" }
+      - { cn: "简谐运动", en: "Simple Harmonic Motion" }
+    electromagnetism:
+      - { cn: "电场", en: "Electric Field" }
+      - { cn: "磁场", en: "Magnetic Field" }
+      - { cn: "电荷", en: "Electric Charge" }
+      - { cn: "电流", en: "Electric Current" }
+      - { cn: "电压", en: "Voltage" }
+      - { cn: "电阻", en: "Resistance" }
+      - { cn: "电容", en: "Capacitance" }
+      - { cn: "电感", en: "Inductance" }
+      - { cn: "麦克斯韦方程组", en: "Maxwell's Equations" }
+      - { cn: "库仑定律", en: "Coulomb's Law" }
+      - { cn: "法拉第定律", en: "Faraday's Law" }
+    thermodynamics:
+      - { cn: "温度", en: "Temperature" }
+      - { cn: "热量", en: "Heat" }
+      - { cn: "熵", en: "Entropy" }
+      - { cn: "焓", en: "Enthalpy" }
+      - { cn: "热力学第一定律", en: "First Law of Thermodynamics" }
+      - { cn: "热力学第二定律", en: "Second Law of Thermodynamics" }
+    waves:
+      - { cn: "波", en: "Wave" }
+      - { cn: "频率", en: "Frequency" }
+      - { cn: "波长", en: "Wavelength" }
+      - { cn: "振幅", en: "Amplitude" }
+      - { cn: "干涉", en: "Interference" }
+      - { cn: "衍射", en: "Diffraction" }
+      - { cn: "多普勒效应", en: "Doppler Effect" }
+    math_terms:
+      - { cn: "向量", en: "Vector" }
+      - { cn: "标量", en: "Scalar" }
+      - { cn: "梯度", en: "Gradient" }
+      - { cn: "散度", en: "Divergence" }
+      - { cn: "旋度", en: "Curl" }
+      - { cn: "微分方程", en: "Differential Equation" }
+      - { cn: "偏微分", en: "Partial Derivative" }
+      - { cn: "线积分", en: "Line Integral" }
+      - { cn: "面积分", en: "Surface Integral" }

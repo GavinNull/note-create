@@ -18,7 +18,7 @@
 |------|------|
 | `/note` | 从教材文本一键生成完整笔记 |
 | `/note --step` | 分步模式，每个阶段可暂停干预 |
-| `/note --profile fds` | 指定 Profile（默认 general） |
+| `/note --profile <name>` | 指定 Profile（默认 default） |
 | `/note-profile` | 从样章分析并自动生成课程 Profile |
 | `/note-terms` | 从样章提取术语词典 |
 
@@ -71,7 +71,7 @@ Stage 4: 审校增强   → 格式检查 + 术语一致性 + 自动修复
 Profile 是 YAML 配置文件，定义一门课的全部设置：术语词典、章节模板、标签语言、格式规则。
 
 ```yaml
-# profiles/fds.yaml — 数据结构课程示例
+# 示例：一门 CS 理论课程的 Profile
 profile:
   domain: "cs_theory"
   languages:
@@ -79,15 +79,12 @@ profile:
     target: "zh-CN"
     annotation: "en"
   terminology:
-    trees:
+    core_concepts:
       - { cn: "二叉树", en: "Binary Tree" }
       - { cn: "堆", en: "Heap" }
-    # ...200+ 术语
 ```
 
-**内置 Profile**：
-- `default.yaml` — 通用默认（英文单语）
-- `fds.yaml` — 数据结构课程（CS Theory, 中英双语, C 语言, 200+ 术语）
+使用 `/note-profile` 从样章自动生成，或手动编写。默认提供 `profiles/default.yaml`（英文单语通用配置）。
 
 **切换教材 = 切换 Profile。**
 
@@ -115,8 +112,8 @@ note-create/
 │   ├── note-profile.md          # Profile 生成器
 │   └── note-terms.md            # 术语词典构建器
 ├── profiles/
-│   ├── default.yaml             # 默认配置
-│   └── fds.yaml                 # FDS 课程配置
+│   └── default.yaml             # 默认配置
+├── test/                        # 测试样例
 └── .pipeline/                   # 旧版 workflow（参考）
     └── workflow.js              # 原始 4-Agent 流水线
 ```

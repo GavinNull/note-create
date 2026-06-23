@@ -1,0 +1,244 @@
+# =============================================================================
+# Profile Template — Copy this file to create a profile for a new course.
+# =============================================================================
+# HOW TO USE:
+#   1. Copy: cp _template.yaml my-course.yaml
+#   2. Fill in the sections marked with 🔧
+#   3. Delete sections that don't apply (e.g., delete 'code' from content_types
+#      if your course has no programming)
+#   4. Run: /workflow .pipeline/workflow.js --profile profiles/my-course.yaml
+#
+# Or use the guided setup wizard:
+#   /workflow .pipeline/profile-generator.js
+#   (paste a sample chapter when prompted)
+# =============================================================================
+
+profile:
+  # 🔧 CHANGE: Your unique profile identifier (used in filenames, etc.)
+  name: "my-course"
+
+  # 🔧 CHANGE: Human-readable display name
+  display: "课程名称 (Course Name)"
+
+  # 🔧 CHANGE: One-line description
+  description: "Brief description of the course"
+
+  # 🔧 CHANGE: Domain classification. Pick the BEST match from:
+  #   cs_theory | cs_systems | math_pure | math_applied
+  #   physics | chemistry | biology | engineering
+  #   economics | humanities | social_science | general
+  # This controls domain-specific prompt behavior in all 4 stages.
+  # See profiles/domain-defaults.yaml for what each domain provides.
+  domain: "general"
+
+  # ── Languages ──────────────────────────────────────────────────────────
+  languages:
+    # 🔧 CHANGE: What language is the textbook written in?
+    # Use ISO 639-1 codes: en, zh, ja, fr, de, es, ko, etc.
+    source: "en"
+
+    # 🔧 CHANGE: What language should the notes be written in?
+    # Use ISO 639-1 code, or "same" to keep source language
+    target: "zh-CN"
+
+    # 🔧 CHANGE: Annotation language for technical terms.
+    # Set to null for monolingual notes (no annotations).
+    annotation: "en"
+
+    # 🔧 CHANGE: How to annotate terms.
+    # "parens" → 中文（English Term）
+    # "slash"  → 中文/English Term
+    # "footnote" → 中文¹ (with footnote)
+    annotation_style: "parens"
+
+    # 🔧 CHANGE: JSON field suffixes for source/target language fields.
+    # Source fields: text_en, title_en → suffix "_en"
+    # Target fields: text_cn, title_cn → suffix "_cn"
+    # For Japanese: field_suffix_target: "_ja"
+    # For French: field_suffix_target: "_fr"
+    field_suffix_source: "_en"
+    field_suffix_target: "_cn"
+
+  # ── Source Text Parsing ────────────────────────────────────────────────
+  source:
+    # 🔧 CHANGE: Regex to find chapter boundaries in raw text.
+    # Examples: "Chapter (\\d+)" | "第(\\d+)章" | "Lecture (\\d+)" | "^(\\d+)\\."
+    chapter_pattern: "Chapter (\\d+)"
+
+    # 🔧 CHANGE: Regex to find section boundaries.
+    # Examples: "§(\\d+)" | "^(\\d+\\.\\d+)" | "Section (\\d+)" | "^###?\\s"
+    section_pattern: "§(\\d+)"
+
+    # 🔧 CHANGE: Section numbering style
+    # "§-prefixed" → §1, §2.1
+    # "dotted"     → 2.1, 2.2
+    # "numbered"   → Section 1, Section 2
+    # "heading"    → ## Section Name (detect by markdown heading level)
+    section_style: "§-prefixed"
+
+    # 🔧 CHANGE: Primary programming language for code blocks.
+    # Set to null if the course has no code.
+    # Examples: "c", "python", "java", "rust", "javascript", "pseudocode"
+    code_language: "c"
+
+    # 🔧 CHANGE: Comment format string. %s = comment text.
+    # C/Java/JS: "/* %s */" or "// %s"
+    # Python:    "# %s"
+    # SQL:       "-- %s"
+    # null:      (course has no code)
+    code_comment_style: "/* %s */"
+
+    # Math delimiters (usually don't need to change)
+    math: { inline: "$", display: "$$" }
+
+  # ── Content Model ──────────────────────────────────────────────────────
+  # 🔧 CHANGE: Which block types to extract. Remove types that don't exist
+  # in your textbook. Order matters — list most important first.
+  #
+  # Available types:
+  #   definition       — Formal term definitions
+  #   theorem          — Theorems, lemmas, corollaries
+  #   code             — Source code snippets
+  #   complexity_table — Algorithm complexity analysis tables
+  #   example          — Worked examples with data
+  #   comparison_table — Side-by-side comparison tables
+  #   note             — Important remarks, tips, warnings
+  #   figure           — Images, diagrams, charts
+  #   interactive_demo — Links to interactive HTML demos
+  #   ascii_diagram    — ASCII-art drawings
+  #   derivation       — Step-by-step formula derivations
+  #   paragraph        — Regular explanatory text
+  #   equation         — Standalone equations (add for math/physics)
+  #   experiment       — Lab experiment descriptions (add for sciences)
+  content_types:
+    - definition
+    - theorem
+    - code
+    - complexity_table
+    - example
+    - comparison_table
+    - note
+    - figure
+    - derivation
+    - paragraph
+
+  # ── Chapter Template ───────────────────────────────────────────────────
+  template:
+    # 🔧 CHANGE: Chapter title format.
+    # Placeholders: {chapter} {title_cn} {title_en}
+    # For monolingual: "# {chapter}. {title}" or "# Chapter {chapter}: {title}"
+    title: "# 第{chapter}章：{title_cn} (Chapter {chapter}: {title_en})"
+
+    # 🔧 CHANGE: Epigraph format. Set to null if chapters have no epigraph.
+    epigraph: "> **{epigraph_en}** {epigraph_cn}"
+
+    # 🔧 CHANGE: Section header format.
+    # Placeholders: {number} {title_cn} {title_en}
+    section: "## §{number} {title_cn} {title_en}"
+
+    # 🔧 CHANGE: Subsection header format (optional).
+    subsection: "### {title_cn} ({title_en})"
+
+    # Section separator
+    separator: "---"
+
+    # 🔧 CHANGE: Table of Contents heading text.
+    toc_heading: "## 目录"
+
+    # 🔧 CHANGE: TOC entry format.
+    # Placeholders: {idx} {section} {title_en} {title_cn} {anchor}
+    toc_entry: "{idx}. [{section} {title_en} {title_cn}](#{anchor})"
+
+    # 🔧 CHANGE: Chapter-end sections that appear after the last §.
+    # Each has: id (unique), heading (markdown heading), optional (bool)
+    # Remove or add entries as needed for your course.
+    end_sections:
+      - id: algorithm_summary
+        heading: "## 算法总结 (Algorithm Summary)"
+        optional: true
+      - id: term_glossary
+        heading: "## 关键术语 (Key Terminology)"
+        optional: false
+      - id: exam_points
+        heading: "## 考点总结 (Exam Summary)"
+        optional: true
+
+  # ── Label Dictionary ───────────────────────────────────────────────────
+  # 🔧 CHANGE: How to render standard labels.
+  # Each label has an 'en' key (original) and a key for your target language.
+  # Add/remove labels as needed for your course.
+  labels:
+    definition:    { en: "Definition",    cn: "定义" }
+    theorem:       { en: "Theorem",       cn: "定理" }
+    lemma:         { en: "Lemma",         cn: "引理" }
+    corollary:     { en: "Corollary",     cn: "推论" }
+    proof:         { en: "Proof",         cn: "证明" }
+    note:          { en: "Note",          cn: "注" }
+    tip:           { en: "Tip",           cn: "提示" }
+    example:       { en: "Example",       cn: "示例" }
+    figure:        { en: "Figure",        cn: "图" }
+
+  # ── Table Templates ────────────────────────────────────────────────────
+  # 🔧 CHANGE: Define the table structures used in your notes.
+  # Each entry: id → { headers: [...] }
+  # Stage 3 will use these to render tables. Add/remove as needed.
+  tables:
+    complexity:
+      headers: ["情况 (Case)", "条件 (Condition)", "时间复杂度 (Time Complexity)"]
+    algorithm_comparison:
+      headers: ["算法 (Algorithm)", "最坏时间 (Worst)", "平均时间 (Average)",
+                "最好时间 (Best)", "空间 (Space)", "稳定性 (Stability)"]
+    term_glossary:
+      headers: ["术语 (Term)", "定义 (Definition)"]
+
+  # ── Formatting Rules ───────────────────────────────────────────────────
+  formatting:
+    # 🔧 CHANGE: Which language's definition comes first?
+    # "en_first" | "target_first" | "target_only"
+    definition_order: "en_first"
+
+    # 🔧 CHANGE: When to annotate terms with source-language equivalents.
+    # "first_per_section" | "every_occurrence" | "never"
+    term_annotation: "first_per_section"
+
+    table_first_column_bold: true
+    blank_lines_around_blocks: true
+
+  # ── Image References ───────────────────────────────────────────────────
+  images:
+    # 🔧 CHANGE: Image path pattern.
+    # Placeholders: {chapter} {slug}
+    path_pattern: "images/ch{chapter:02d}-{slug}.png"
+    alt_text: "{description_cn}"
+    # 🔧 CHANGE: Interactive demo link format. Set to null if unused.
+    demo_link: "> [点击打开 {name}]({path}) — {description}"
+
+  # ── Review Rules ───────────────────────────────────────────────────────
+  review:
+    check_term_consistency: true
+    check_latex: true
+    check_code_comments: true
+    check_missing_summaries: true
+    punctuation:
+      chinese_in_chinese_text: true
+      no_html_tags: true
+
+  # ── Terminology Dictionary ─────────────────────────────────────────────
+  # 🔧 CRITICAL: This is the most important section for a new course.
+  #
+  # Add ALL technical terms in your course here.
+  # Format: { cn: "目标语言术语", en: "Source Term" }
+  #   - The 'cn' key should match your target language (e.g., 'ja' for Japanese)
+  #   - The 'en' key should match your source language
+  #   - For monolingual courses, both keys can be in the same language
+  #
+  # Organize by domain for readability — the pipeline flattens all categories.
+  # Copy-paste the domain structure and replace with your course's domains.
+  terminology:
+    # 🔧 REPLACE: Add your course's core concepts
+    core_concepts:
+      # - { cn: "术语", en: "Term" }
+
+    # 🔧 REPLACE: Add more domains as needed
+    # domain_name:
+    #   - { cn: "...", en: "..." }

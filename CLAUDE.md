@@ -16,7 +16,7 @@
 Profile 是 YAML 文件，定义一门课的所有配置：术语词典、章节模板、标签语言、格式规则。
 
 - `profiles/default.yaml` — 通用默认（英文单语、dotted 章节）
-- `profiles/fds.yaml` — 数据结构（CS Theory, C语言, 中英双语, 200+术语）
+- 使用 `/note-profile` 从样章自动生成新课程的 Profile
 
 切换教材 = 切换 Profile。
 

@@ -1,0 +1,86 @@
+# =============================================================================
+# FDS Notes Pipeline — Universal Configuration
+# =============================================================================
+# This file contains ONLY settings that apply regardless of course/subject.
+# All course-specific settings (terminology, templates, labels, content types)
+# have moved to profiles/. See profiles/fds.yaml for the FDS course profile.
+#
+# To adapt for a new course:
+#   1. Copy profiles/_template.yaml → profiles/your-course.yaml
+#   2. Fill in your course's terminology, templates, and settings
+#   3. Run: /workflow .pipeline/workflow.js --profile profiles/your-course.yaml
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Default Profile
+# -----------------------------------------------------------------------------
+# Which profile to use when none is specified.
+default_profile: "profiles/fds.yaml"
+
+# -----------------------------------------------------------------------------
+# Pipeline Metadata
+# -----------------------------------------------------------------------------
+pipeline:
+  version: "2.0"
+  stages: 4
+  description: "Multi-stage textbook → bilingual notes pipeline with profile-based adaptation"
+
+# -----------------------------------------------------------------------------
+# Universal Formatting Constants
+# -----------------------------------------------------------------------------
+# These apply to ALL courses regardless of subject or language.
+formatting:
+  math:
+    inline_delimiter: "$"
+    display_delimiter: "$$"
+    # LaTeX commands that should never be translated or modified
+    protected_commands:
+      - "\\log"
+      - "\\Theta"
+      - "\\Omega"
+      - "\\pmod"
+      - "\\lfloor"
+      - "\\rfloor"
+      - "\\lceil"
+      - "\\rceil"
+      - "\\text"
+
+  markdown:
+    # Rules that apply to all markdown output
+    no_html_tags: true
+    heading_style: "atx"           # Use # ## ### (not setext === ---)
+    code_fence_style: "backtick"   # ``` not ~~~
+    list_marker: "-"               # - not *
+
+  block_spacing:
+    blank_lines_before_code: 1
+    blank_lines_after_code: 1
+    blank_lines_before_table: 1
+    blank_lines_after_table: 1
+    blank_lines_before_blockquote: 1
+    blank_lines_after_blockquote: 1
+
+# -----------------------------------------------------------------------------
+# Stage Execution Order
+# -----------------------------------------------------------------------------
+stages:
+  - id: "extract"
+    order: 1
+    input: "raw_text"
+    output: "structured_json"
+    description: "Structural extraction from raw textbook text"
+  - id: "bilingual"
+    order: 2
+    input: "structured_json"
+    output: "bilingual_json"
+    description: "Translation and terminology annotation"
+  - id: "render"
+    order: 3
+    input: "bilingual_json"
+    output: "markdown"
+    description: "Markdown rendering with chapter template"
+  - id: "review"
+    order: 4
+    input: "markdown"
+    output: "final_markdown"
+    description: "Quality review and consistency check"
