@@ -1,0 +1,62 @@
+# Default Profile — 通用默认配置
+profile:
+  name: "default"
+  display: "Untitled Course"
+  description: "Minimal default profile for general use"
+  domain: "general"
+  languages:
+    source: "en"
+    target: "en"
+    annotation: null
+    annotation_style: null
+    field_suffix_source: "_en"
+    field_suffix_target: "_en"
+  source:
+    chapter_pattern: "Chapter (\\d+)"
+    section_pattern: "^(\\d+\\.\\d+)"
+    section_style: "dotted"
+    code_language: null
+    code_comment_style: null
+    math: { inline: "$", display: "$$" }
+  content_types:
+    - definition
+    - example
+    - note
+    - figure
+    - paragraph
+  template:
+    title: "# Chapter {chapter}: {title_en}"
+    epigraph: null
+    section: "## {number} {title_en}"
+    subsection: "### {title_en}"
+    separator: "---"
+    toc_heading: "## Contents"
+    toc_entry: "{idx}. [{section} {title_en}](#{anchor})"
+    end_sections:
+      - id: highlights
+        heading: "## Chapter Highlights"
+        optional: true
+      - id: glossary
+        heading: "## Key Terms"
+        optional: false
+  labels:
+    definition: { en: "Definition" }
+    example: { en: "Example" }
+    note: { en: "Note" }
+    figure: { en: "Figure" }
+  tables:
+    glossary:
+      headers: ["Term", "Definition"]
+  formatting:
+    definition_order: "source_only"
+    term_annotation: "never"
+    table_first_column_bold: true
+    blank_lines_around_blocks: true
+  review:
+    check_term_consistency: false
+    check_latex: false
+    check_code_comments: false
+    check_missing_summaries: true
+    punctuation:
+      no_html_tags: true
+  terminology: {}

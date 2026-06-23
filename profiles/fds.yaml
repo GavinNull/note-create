@@ -1,0 +1,360 @@
+# =============================================================================
+# FDS Course Profile — 数据结构基础 (Fundamentals of Data Structures)
+# =============================================================================
+# This profile captures everything specific to the FDS course.
+# To adapt the pipeline to a different course, create a new profile file
+# and point workflow.js at it: workflow.js --profile profiles/my-course.yaml
+# =============================================================================
+
+profile:
+  name: "fds"
+  display: "数据结构基础 (Fundamentals of Data Structures)"
+  description: "Bilingual CN/EN data structures course using C language, §-prefixed sections, complexity analysis focus"
+  domain: "cs_theory"
+
+  # ── Languages ──────────────────────────────────────────────────────────
+  languages:
+    source: "en"              # Textbook is in English
+    target: "zh-CN"           # Notes are in Chinese
+    annotation: "en"          # Terms are annotated with English equivalents
+    annotation_style: "parens" # 中文（English Term）
+    field_suffix_source: "_en"    # JSON field suffix for source language
+    field_suffix_target: "_cn"    # JSON field suffix for target language
+
+  # ── Source Text Parsing ────────────────────────────────────────────────
+  source:
+    chapter_pattern: "Chapter (\\d+)"     # How chapters are marked in raw text
+    section_pattern: "§(\\d+)"            # How sections are marked
+    section_style: "§-prefixed"           # "§-prefixed" | "dotted" | "numbered"
+    code_language: "c"                    # Default programming language
+    code_comment_style: "/* %s */"        # Comment format (%s = text)
+    math: { inline: "$", display: "$$" }  # Math delimiters
+
+  # ── Content Model ──────────────────────────────────────────────────────
+  # Block types to extract in Stage 1, in priority order.
+  # Types not listed are ignored.
+  content_types:
+    - definition
+    - theorem
+    - code
+    - complexity_table
+    - example
+    - comparison_table
+    - note
+    - figure
+    - interactive_demo
+    - ascii_diagram
+    - derivation
+    - paragraph
+
+  # ── Chapter Template ───────────────────────────────────────────────────
+  template:
+    title: "# 第{chapter}章：{title_cn} (Chapter {chapter}: {title_en})"
+    epigraph: "> **{epigraph_en}** {epigraph_cn}"
+    section: "## §{number} {title_cn} {title_en}"
+    subsection: "### {title_cn} ({title_en})"
+    separator: "---"
+    toc_heading: "## 目录"
+    toc_entry: "{idx}. [{section} {title_en} {title_cn}](#{anchor})"
+
+    end_sections:
+      - id: algorithm_summary
+        heading: "## 算法总结 (Algorithm Summary)"
+        optional: true
+      - id: term_glossary
+        heading: "## 关键术语 (Key Terminology)"
+        optional: false
+      - id: exam_points
+        heading: "## 考点总结 (Exam Summary)"
+        optional: true
+
+  # ── Label Dictionary ───────────────────────────────────────────────────
+  labels:
+    definition:    { en: "Definition",    cn: "定义" }
+    theorem:       { en: "Theorem",       cn: "定理" }
+    lemma:         { en: "Lemma",         cn: "引理" }
+    corollary:     { en: "Corollary",     cn: "推论" }
+    proof:         { en: "Proof",         cn: "证明" }
+    contradiction: { en: "Contradiction", cn: "矛盾" }
+    note:          { en: "Note",          cn: "注" }
+    tip:           { en: "Tip",           cn: "提示" }
+    example:       { en: "Example",       cn: "示例" }
+    figure:        { en: "Figure",        cn: "图" }
+    table:         { en: "Table",         cn: "表" }
+    algorithm:     { en: "Algorithm",     cn: "算法" }
+
+  # ── Table Templates ────────────────────────────────────────────────────
+  tables:
+    complexity:
+      headers: ["情况 (Case)", "条件 (Condition)", "时间复杂度 (Time Complexity)"]
+    algorithm_comparison:
+      headers: ["算法 (Algorithm)", "最坏时间 (Worst)", "平均时间 (Average)",
+                "最好时间 (Best)", "空间 (Space)", "稳定性 (Stability)"]
+    term_glossary:
+      headers: ["术语 (Term)", "定义 (Definition)"]
+    operation_adt:
+      headers: ["操作 (Operation)", "签名 (Signature)", "说明 (Description)"]
+
+  # ── Formatting Rules ───────────────────────────────────────────────────
+  formatting:
+    definition_order: "en_first"           # English definition before Chinese
+    term_annotation: "first_per_section"   # Annotate terms once per section
+    table_first_column_bold: true
+    blank_lines_around_blocks: true
+
+  # ── Image References ───────────────────────────────────────────────────
+  images:
+    path_pattern: "images/ch{chapter:02d}-{slug}.png"
+    alt_text: "{description_cn}"
+    demo_link: "> [点击打开 {name}]({path}) — {description}"
+
+  # ── Review Rules ───────────────────────────────────────────────────────
+  review:
+    check_term_consistency: true
+    check_latex: true
+    check_code_comments: true
+    check_missing_summaries: true
+    punctuation:
+      chinese_in_chinese_text: true   # Use ：（） not :() in Chinese
+      no_html_tags: true
+
+  # ── Complexity Class Reference ─────────────────────────────────────────
+  complexity_classes:
+    - { class: "O(1)",              label: "常数时间 (Constant)",            examples: "数组索引、哈希查找（平均）" }
+    - { class: "O(\\log N)",        label: "对数时间 (Logarithmic)",         examples: "二分查找、堆操作、BST查找（平均）" }
+    - { class: "O(N)",              label: "线性时间 (Linear)",              examples: "线性扫描、BuildHeap、在线最大子序列和" }
+    - { class: "O(N \\log N)",      label: "线性对数时间 (Linearithmic)",    examples: "归并排序、快速排序（平均）、堆排序" }
+    - { class: "O(N^2)",            label: "平方时间 (Quadratic)",           examples: "插入排序、冒泡排序、朴素Dijkstra" }
+    - { class: "O(N^3)",            label: "立方时间 (Cubic)",              examples: "Floyd-Warshall、矩阵乘法" }
+    - { class: "O(2^N)",            label: "指数时间 (Exponential)",         examples: "朴素斐波那契递归" }
+    - { class: "\\Omega(N \\log N)", label: "比较排序下界 (Sorting Lower Bound)", examples: "所有基于比较的排序算法" }
+
+  # ── Terminology Dictionary ─────────────────────────────────────────────
+  # All term pairs used by Stage 2 (Bilingual) and Stage 4 (Review).
+  # Organized by domain; the pipeline flattens this at load time.
+  terminology:
+
+    fundamentals:
+      - { cn: "抽象数据类型", en: "Abstract Data Type (ADT)" }
+      - { cn: "数据结构", en: "Data Structure" }
+      - { cn: "算法", en: "Algorithm" }
+      - { cn: "对象", en: "Objects" }
+      - { cn: "操作", en: "Operations" }
+      - { cn: "接口", en: "Interface" }
+      - { cn: "实现", en: "Implementation" }
+      - { cn: "规格说明", en: "Specification" }
+      - { cn: "表示", en: "Representation" }
+
+    analysis:
+      - { cn: "时间复杂度", en: "Time Complexity" }
+      - { cn: "空间复杂度", en: "Space Complexity" }
+      - { cn: "最坏情况", en: "Worst Case" }
+      - { cn: "最好情况", en: "Best Case" }
+      - { cn: "平均情况", en: "Average Case" }
+      - { cn: "平摊分析", en: "Amortized Analysis" }
+      - { cn: "增长率", en: "Growth Rate" }
+      - { cn: "递推关系", en: "Recurrence Relation" }
+      - { cn: "上界", en: "Upper Bound" }
+      - { cn: "下界", en: "Lower Bound" }
+      - { cn: "紧确界", en: "Tight Bound" }
+      - { cn: "大O记号", en: "Big-Oh Notation" }
+      - { cn: "运行时间", en: "Running Time" }
+
+    linear_structures:
+      - { cn: "线性表", en: "List" }
+      - { cn: "链表", en: "Linked List" }
+      - { cn: "单向链表", en: "Singly Linked List" }
+      - { cn: "双向链表", en: "Doubly Linked List" }
+      - { cn: "循环链表", en: "Circular List" }
+      - { cn: "双向循环链表", en: "Doubly Linked Circular List" }
+      - { cn: "头节点", en: "Header Node" }
+      - { cn: "哑头节点", en: "Dummy Header Node" }
+      - { cn: "栈", en: "Stack" }
+      - { cn: "队列", en: "Queue" }
+      - { cn: "循环队列", en: "Circular Queue" }
+      - { cn: "顺序映射", en: "Sequential Mapping" }
+      - { cn: "游标实现", en: "Cursor Implementation" }
+      - { cn: "数组实现", en: "Array Implementation" }
+      - { cn: "动态分配", en: "Dynamic Allocation" }
+
+    stack_queue_ops:
+      - { cn: "后进先出", en: "LIFO (Last In First Out)" }
+      - { cn: "先进先出", en: "FIFO (First In First Out)" }
+      - { cn: "入栈", en: "Push" }
+      - { cn: "出栈", en: "Pop" }
+      - { cn: "栈顶", en: "Top" }
+      - { cn: "入队", en: "Enqueue" }
+      - { cn: "出队", en: "Dequeue" }
+      - { cn: "队首", en: "Front" }
+      - { cn: "队尾", en: "Rear" }
+      - { cn: "空栈", en: "Empty Stack" }
+      - { cn: "满栈", en: "Full Stack" }
+      - { cn: "回绕", en: "Wrap-around" }
+
+    trees:
+      - { cn: "树", en: "Tree" }
+      - { cn: "二叉树", en: "Binary Tree" }
+      - { cn: "完全二叉树", en: "Complete Binary Tree" }
+      - { cn: "满二叉树", en: "Full Binary Tree" }
+      - { cn: "斜二叉树", en: "Skewed Binary Tree" }
+      - { cn: "二叉搜索树", en: "Binary Search Tree (BST)" }
+      - { cn: "线索二叉树", en: "Threaded Binary Tree" }
+      - { cn: "表达式树", en: "Expression Tree" }
+      - { cn: "语法树", en: "Syntax Tree" }
+      - { cn: "根", en: "Root" }
+      - { cn: "叶子节点", en: "Leaf Node" }
+      - { cn: "内部节点", en: "Internal Node" }
+      - { cn: "父节点", en: "Parent" }
+      - { cn: "子节点", en: "Child / Children" }
+      - { cn: "兄弟节点", en: "Siblings" }
+      - { cn: "祖先", en: "Ancestors" }
+      - { cn: "后代", en: "Descendants" }
+      - { cn: "深度", en: "Depth" }
+      - { cn: "高度", en: "Height" }
+      - { cn: "度", en: "Degree" }
+      - { cn: "路径", en: "Path" }
+      - { cn: "路径长度", en: "Length of Path" }
+      - { cn: "先序遍历", en: "Preorder Traversal" }
+      - { cn: "中序遍历", en: "Inorder Traversal" }
+      - { cn: "后序遍历", en: "Postorder Traversal" }
+      - { cn: "层序遍历", en: "Levelorder Traversal" }
+      - { cn: "中序前驱", en: "Inorder Predecessor" }
+      - { cn: "中序后继", en: "Inorder Successor" }
+      - { cn: "线索", en: "Thread" }
+      - { cn: "左孩子右兄弟表示法", en: "FirstChild-NextSibling Representation" }
+
+    heaps:
+      - { cn: "优先队列", en: "Priority Queue" }
+      - { cn: "堆", en: "Heap" }
+      - { cn: "最小堆", en: "Min-Heap" }
+      - { cn: "最大堆", en: "Max-Heap" }
+      - { cn: "堆序性质", en: "Heap-Order Property" }
+      - { cn: "上滤", en: "Percolate Up" }
+      - { cn: "下滤", en: "Percolate Down" }
+      - { cn: "建堆", en: "BuildHeap" }
+      - { cn: "删除最小元", en: "DeleteMin" }
+      - { cn: "d-堆", en: "d-Heap" }
+      - { cn: "二项队列", en: "Binomial Queue" }
+      - { cn: "左式堆", en: "Leftist Heap" }
+      - { cn: "斜堆", en: "Skew Heap" }
+      - { cn: "零路径长", en: "Null Path Length (NPL)" }
+
+    sorting:
+      - { cn: "排序", en: "Sorting" }
+      - { cn: "内部排序", en: "Internal Sorting" }
+      - { cn: "外部排序", en: "External Sorting" }
+      - { cn: "插入排序", en: "Insertion Sort" }
+      - { cn: "希尔排序", en: "Shellsort" }
+      - { cn: "堆排序", en: "Heapsort" }
+      - { cn: "归并排序", en: "Mergesort" }
+      - { cn: "快速排序", en: "Quicksort" }
+      - { cn: "桶排序", en: "Bucket Sort" }
+      - { cn: "基数排序", en: "Radix Sort" }
+      - { cn: "基于比较的排序", en: "Comparison-based Sorting" }
+      - { cn: "逆序对", en: "Inversion" }
+      - { cn: "主元", en: "Pivot" }
+      - { cn: "三数取中", en: "Median-of-Three" }
+      - { cn: "增量序列", en: "Increment Sequence" }
+      - { cn: "决策树", en: "Decision Tree" }
+      - { cn: "稳定性", en: "Stability" }
+      - { cn: "原地排序", en: "In-place Sorting" }
+      - { cn: "间接排序", en: "Indirect Sorting" }
+      - { cn: "表排序", en: "Table Sort" }
+      - { cn: "置换选择", en: "Replacement Selection" }
+
+    hashing:
+      - { cn: "哈希", en: "Hashing" }
+      - { cn: "哈希表", en: "Hash Table" }
+      - { cn: "哈希函数", en: "Hash Function" }
+      - { cn: "符号表", en: "Symbol Table" }
+      - { cn: "字典", en: "Dictionary" }
+      - { cn: "冲突", en: "Collision" }
+      - { cn: "溢出", en: "Overflow" }
+      - { cn: "分离链接法", en: "Separate Chaining" }
+      - { cn: "开放地址法", en: "Open Addressing" }
+      - { cn: "线性探测", en: "Linear Probing" }
+      - { cn: "二次探测", en: "Quadratic Probing" }
+      - { cn: "双哈希", en: "Double Hashing" }
+      - { cn: "一次聚集", en: "Primary Clustering" }
+      - { cn: "二次聚集", en: "Secondary Clustering" }
+      - { cn: "负载密度", en: "Loading Density" }
+      - { cn: "再哈希", en: "Rehashing" }
+      - { cn: "惰性删除", en: "Lazy Deletion" }
+      - { cn: "桶", en: "Bucket" }
+      - { cn: "槽位", en: "Slot" }
+      - { cn: "均匀哈希函数", en: "Uniform Hash Function" }
+
+    union_find_segtree:
+      - { cn: "并查集", en: "Union-Find / Disjoint Set" }
+      - { cn: "不相交集", en: "Disjoint Set" }
+      - { cn: "等价关系", en: "Equivalence Relation" }
+      - { cn: "等价类", en: "Equivalence Class" }
+      - { cn: "自反的", en: "Reflexive" }
+      - { cn: "对称的", en: "Symmetric" }
+      - { cn: "传递的", en: "Transitive" }
+      - { cn: "按大小合并", en: "Union-by-Size" }
+      - { cn: "按高度合并", en: "Union-by-Height" }
+      - { cn: "按秩合并", en: "Union-by-Rank" }
+      - { cn: "路径压缩", en: "Path Compression" }
+      - { cn: "反阿克曼函数", en: "Inverse Ackermann Function" }
+      - { cn: "迭代对数", en: "Iterated Logarithm" }
+      - { cn: "线段树", en: "Segment Tree" }
+      - { cn: "范围查询", en: "Range Query" }
+      - { cn: "单点更新", en: "Point Update" }
+      - { cn: "范围更新", en: "Range Update" }
+      - { cn: "懒标记", en: "Lazy Tag / Lazy Propagation" }
+      - { cn: "聚合值", en: "Aggregate Value" }
+
+    graphs:
+      - { cn: "图", en: "Graph" }
+      - { cn: "有向图", en: "Directed Graph / Digraph" }
+      - { cn: "无向图", en: "Undirected Graph" }
+      - { cn: "有向无环图", en: "DAG (Directed Acyclic Graph)" }
+      - { cn: "邻接矩阵", en: "Adjacency Matrix" }
+      - { cn: "邻接表", en: "Adjacency List" }
+      - { cn: "拓扑排序", en: "Topological Sort" }
+      - { cn: "最短路径", en: "Shortest Path" }
+      - { cn: "网络流", en: "Network Flow" }
+      - { cn: "最小生成树", en: "Minimum Spanning Tree (MST)" }
+      - { cn: "深度优先搜索", en: "DFS (Depth-First Search)" }
+      - { cn: "广度优先搜索", en: "BFS (Breadth-First Search)" }
+      - { cn: "双连通性", en: "Biconnectivity" }
+      - { cn: "欧拉回路", en: "Euler Circuit" }
+      - { cn: "割点", en: "Articulation Point" }
+      - { cn: "强连通分量", en: "Strongly Connected Component" }
+
+    paradigms:
+      - { cn: "分治法", en: "Divide and Conquer" }
+      - { cn: "贪心算法", en: "Greedy Algorithm" }
+      - { cn: "动态规划", en: "Dynamic Programming" }
+      - { cn: "递归", en: "Recursion" }
+      - { cn: "迭代", en: "Iteration" }
+      - { cn: "尾递归", en: "Tail Recursion" }
+      - { cn: "在线算法", en: "Online Algorithm" }
+      - { cn: "离线算法", en: "Offline Algorithm" }
+
+    math_terms:
+      - { cn: "引理", en: "Lemma" }
+      - { cn: "定理", en: "Theorem" }
+      - { cn: "推论", en: "Corollary" }
+      - { cn: "证明", en: "Proof" }
+      - { cn: "归纳法", en: "Induction" }
+      - { cn: "反证法", en: "Proof by Contradiction" }
+      - { cn: "猜想", en: "Conjecture" }
+      - { cn: "定义", en: "Definition" }
+      - { cn: "性质", en: "Property" }
+      - { cn: "质数", en: "Prime Number" }
+      - { cn: "互质", en: "Relatively Prime" }
+
+    misc:
+      - { cn: "哨兵", en: "Sentinel" }
+      - { cn: "标志位", en: "Flag" }
+      - { cn: "指针", en: "Pointer" }
+      - { cn: "引用", en: "Reference" }
+      - { cn: "内存分配", en: "Memory Allocation (malloc)" }
+      - { cn: "释放内存", en: "Free" }
+      - { cn: "比较", en: "Comparison" }
+      - { cn: "交换", en: "Swap / Exchange" }
+      - { cn: "相邻元素", en: "Adjacent Elements" }
+      - { cn: "关键字", en: "Key" }
+      - { cn: "属性", en: "Attribute" }
