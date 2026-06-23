@@ -1,6 +1,23 @@
 ---
 name: note
-description: 从教材文本生成结构化双语笔记。支持12学科领域、多语言、Profile驱动。
+description: 从教材文本生成结构化双语笔记。支持12学科领域、多语言、Profile驱动。当用户粘贴教材章节、提到做笔记/整理笔记/整理知识点/双语笔记/中英对照，或发送包含Chapter/§/Definition/Theorem/第X章/定义/定理的文本时自动触发。
+triggers:
+  - 教材
+  - 教科书
+  - 章节
+  - 笔记
+  - note
+  - 整理知识点
+  - 提取重点
+  - 总结章节
+  - 双语笔记
+  - 中英对照
+  - Chapter
+  - Definition
+  - Theorem
+  - 第X章
+  - 定义
+  - 定理
 ---
 
 # Note Generator — Pipeline v3.1 完整复现
